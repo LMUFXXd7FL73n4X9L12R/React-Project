@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
-import { useParams } from "react-router";
+import React from "react";
+import { useParams } from "react-router-dom";
 import { ProductContext } from "../contexts/ProductContext.jsx";
 
 const ProductDetails = () => {
 	// get the product id from url
 	const { id } = useParams();
-	const { products } = useContext(ProductContext);
+	const { products } = React.useContext(ProductContext);
 
 	//get the single product based on id
-	const product = products[id];
+	const product = products.find((p) => String(p.id) === String(id));
 
 	// if product is not found
 	if (!product) {
