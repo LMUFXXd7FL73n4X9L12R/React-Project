@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 import { IoMdArrowForward } from "react-icons/io";
 import { FiTrash2 } from "react-icons/fi";

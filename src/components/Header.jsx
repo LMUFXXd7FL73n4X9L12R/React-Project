@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../contexts/CartContext.jsx";
 import { CurrencyContext } from "../contexts/CurrencyContext.jsx";
-import { Link, useNavigate } from "react-router";
+import { SidebarContext } from "../contexts/SidebarContext.jsx";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/img/logo.svg";
 import { BsBag } from "react-icons/bs";
 import { CiUser } from "react-icons/ci";
@@ -15,7 +16,8 @@ const Header = () => {
 	const navigate = useNavigate(); // Add navigation hook
 
 	// currency state
-	const { currency, setCurrencySymbol } = useContext(CurrencyContext);
+	const { currency, setCurrency } = useContext(CurrencyContext);
+	const { setIsOpen } = useContext(SidebarContext);
 
 	// event listener
 	useEffect(() => {
@@ -48,8 +50,7 @@ const Header = () => {
 
 	// Handle cart button click
 	const handleOpen = () => {
-		// Logic to open the sidebar
-		console.log("Sidebar opened");
+		setIsOpen(true);
 	};
 
 	return (
@@ -70,7 +71,7 @@ const Header = () => {
 					{/* currency select */}
 					<select
 						value={currency}
-						onChange={(e) => setCurrencySymbol(e.target.value)} // Update currency on change
+						onChange={(e) => setCurrency(e.target.value)} // Update currency on change
 						className="border border-slate-800 rounded-md px-3 py-2 focus:outline-none text-slate-800 text-sm"
 						aria-label="Select currency"
 					>

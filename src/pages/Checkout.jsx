@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { CartContext } from "../contexts/CartContext.jsx";
 import { CurrencyContext } from "../contexts/CurrencyContext.jsx";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 const Checkout = () => {
 	const { cart, total, clearCart } = useContext(CartContext);
