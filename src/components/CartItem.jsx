@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 
 import { IoMdAdd, IoMdClose, IoMdRemove } from "react-icons/io";
 
@@ -60,9 +60,7 @@ const CartItem = ({ item }) => {
 							$ {price}
 						</div>
 						{/* final price */}
-						<div className="flex flex-1 justify-end items-center text-primary font-medium">{`$ ${parseFloat(
-							price * amount
-						).toFixed(2)}`}</div>
+						<div className="flex flex-1 justify-end items-center text-primary font-medium">{`$ ${(price * amount).toFixed(2)}`}</div>
 					</div>
 				</div>
 			</div>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../contexts/CartContext.jsx";
 import { CurrencyContext } from "../contexts/CurrencyContext.jsx";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/img/logo.svg";
 import { BsBag } from "react-icons/bs";
 import { CiUser } from "react-icons/ci";
@@ -15,14 +15,16 @@ const Header = () => {
 	const navigate = useNavigate(); // Add navigation hook
 
 	// currency state
-	const { currency } = useContext(CurrencyContext);
+	const { currency, setCurrency } = useContext(CurrencyContext);
 
 	// event listener
 	useEffect(() => {
-		window.addEventListener("scroll", () => {
+		const handleScroll = () => {
 			window.scrollY > 60 ? setIsActive(true) : setIsActive(false);
-		});
-	});
+		};
+		window.addEventListener("scroll", handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
 
 	// Handle user icon click - show dropdown or navigate to login
 	const [showUserMenu, setShowUserMenu] = useState(false);
@@ -46,6 +48,15 @@ const Header = () => {
 		}
 	};
 
+	// Handle cart click (open sidebar)
+	const handleCartClick = () => {
+		const sidebarBtn = document.querySelector(".cart-btn");
+		if (sidebarBtn) {
+			// This should trigger sidebar open logic, but for now just scroll to top
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		}
+	};
+
 	return (
 		<header
 			className={`${
@@ -64,7 +75,7 @@ const Header = () => {
 					{/* currency select */}
 					<select
 						value={currency}
-						onChange={() => {}}
+						onChange={(e) => setCurrency(e.target.value)}
 						className="border border-slate-800 rounded-md px-3 py-2 focus:outline-none text-slate-800 text-sm"
 						aria-label="Select currency"
 					>
@@ -75,7 +86,7 @@ const Header = () => {
 
 					{/* cart */}
 					<div
-						onClick={() => {}}
+						onClick={handleCartClick}
 						className="cart-btn cursor-pointer flex relative"
 						role="button"
 						aria-label="cart"
