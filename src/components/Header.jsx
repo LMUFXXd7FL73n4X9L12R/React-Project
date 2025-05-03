@@ -15,7 +15,7 @@ const Header = () => {
 	const navigate = useNavigate(); // Add navigation hook
 
 	// currency state
-	const { currency } = useContext(CurrencyContext);
+	const { currency, setCurrencySymbol } = useContext(CurrencyContext);
 
 	// event listener
 	useEffect(() => {
@@ -46,6 +46,12 @@ const Header = () => {
 		}
 	};
 
+	// Handle cart button click
+	const handleOpen = () => {
+		// Logic to open the sidebar
+		console.log("Sidebar opened");
+	};
+
 	return (
 		<header
 			className={`${
@@ -64,18 +70,18 @@ const Header = () => {
 					{/* currency select */}
 					<select
 						value={currency}
-						onChange={() => {}}
+						onChange={(e) => setCurrencySymbol(e.target.value)} // Update currency on change
 						className="border border-slate-800 rounded-md px-3 py-2 focus:outline-none text-slate-800 text-sm"
 						aria-label="Select currency"
 					>
-						<option value="USD">🇺🇸 USD</option>
-						<option value="EUR">🇪🇺 EUR</option>
-						<option value="GBP">🇬🇧 GBP</option>
+						<option value="$">USD</option>
+						<option value="€">EUR</option>
+						<option value="£">GBP</option>
 					</select>
 
 					{/* cart */}
-					<div
-						onClick={() => {}}
+					<button
+						onClick={handleOpen} // Open the sidebar when cart button is clicked
 						className="cart-btn cursor-pointer flex relative"
 						role="button"
 						aria-label="cart"
@@ -84,7 +90,7 @@ const Header = () => {
 						<div className="bg-slate-800 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
 							{itemAmount}
 						</div>
-					</div>
+					</button>
 
 					{/* user */}
 					<div

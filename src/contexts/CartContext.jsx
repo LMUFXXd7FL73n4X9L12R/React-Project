@@ -11,9 +11,7 @@ const CartProvider = ({ children }) => {
 	const [total, setTotal] = useState(0);
 
 	useEffect(() => {
-		const total = cart.reduce((accumulator, currentItem) => {
-			return accumulator + currentItem.price;
-		}, 0);
+		const total = cart.reduce((acc, item) => acc + item.price * item.amount, 0);
 		setTotal(total);
 	}, [cart]);
 
@@ -28,21 +26,18 @@ const CartProvider = ({ children }) => {
 	}, [cart]);
 
 	// add to cart
-	const addToCart = (product, id) => {
-		const newItem = { ...product, amount: 2 };
-		// check if the item is already in the cart
-		const cartItem = cart.find((item) => {
-			return item.id === id;
-		});
-		if (cartItem) {
-			const newCart = [...cart].map((item) => {
-				if (item.id === id) {
-					return { ...item, amount: cartItem.amount };
-				} else return item;
-			});
-			setCart(newCart);
+	const addToCart = (product) => {
+		const existingItem = cart.find((item) => item.id === product.id);
+		if (existingItem) {
+			setCart(
+				cart.map((item) =>
+					item.id === product.id
+						? { ...item, amount: item.amount + 1 }
+						: item
+				)
+			);
 		} else {
-			setCart([...cart, newItem]);
+			setCart([...cart, { ...product, amount: 1 }]);
 		}
 	};
 
@@ -54,20 +49,32 @@ const CartProvider = ({ children }) => {
 		setCart(newCart);
 	};
 
-	// cleart cart
+	// clear cart
 	const clearCart = () => {
 		setCart([]);
 	};
 
 	// increase amount
 	const increaseAmount = (id) => {
-		const cartItem = cart.find((item) => item.id === id);
-		addToCart(cartItem, id);
+		setCart(
+			cart.map((item) =>
+				item.id === id ? { ...item, amount: item.amount + 1 } : item
+			)
+		);
 	};
 
 	// decrease amount
 	const decreaseAmount = (id) => {
-		const cartItem = cart.find((item) => item.id === id);
+		const item = cart.find((item) => item.id === id);
+		if (item.amount === 1) {
+			setCart(cart.filter((item) => item.id !== id));
+		} else {
+			setCart(
+				cart.map((item) =>
+					item.id === id ? { ...item, amount: item.amount - 1 } : item
+				)
+			);
+		}
 	};
 
 	return (

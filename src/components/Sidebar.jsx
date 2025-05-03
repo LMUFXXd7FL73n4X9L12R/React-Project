@@ -14,7 +14,7 @@ const Sidebar = () => {
 	const navigate = useNavigate();
 
 	const { isOpen, handleClose } = useContext(SidebarContext);
-	const { cart, itemAmount, total } = useContext(CartContext);
+	const { cart, itemAmount, total, clearCart } = useContext(CartContext);
 	const { currencySymbol } = useContext(CurrencyContext);
 
 	const handleCheckout = () => {
@@ -57,13 +57,13 @@ const Sidebar = () => {
 						<span className="mr-2">Subtotal:</span>
 						{`${currencySymbol} ${parseFloat(total).toFixed(2)}`}
 					</div>
-					{/* clear cart icon */}
-					<div
-						onClick={() => {}}
-						className="clear-cart-btn cursor-pointer py-4 bg-red-500 text-white w-12 h-12 flex justify-center items-center text-xl"
+					{/* clear cart button */}
+					<button
+						onClick={clearCart}
+						className="bg-red-500 text-white py-2 px-4 rounded"
 					>
-						<FiTrash2 />
-					</div>
+						Clear Cart
+					</button>
 				</div>
 				<button
 					type="button"
