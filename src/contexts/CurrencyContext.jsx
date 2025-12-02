@@ -32,8 +32,12 @@ const CurrencyProvider = ({ children }) => {
 		setCurrencySymbol(CURRENCY_SYMBOLS[currency]);
 	}, [currency]);
 
+	const convertPrice = (price) => {
+		return (price * EXCHANGE_RATES[currency]).toFixed(2);
+	};
+
 	return (
-		<CurrencyContext.Provider value={{ currency, setCurrency, currencySymbol }}>
+		<CurrencyContext.Provider value={{ currency, setCurrency, currencySymbol, convertPrice }}>
 			{children}
 		</CurrencyContext.Provider>
 	);

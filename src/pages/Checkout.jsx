@@ -7,7 +7,7 @@ import { CurrencyContext } from '../contexts/CurrencyContext.jsx';
 
 const Checkout = () => {
   const { cart, total, clearCart }  = useContext(CartContext);
-  const { currencySymbol }          = useContext(CurrencyContext);
+  const { currencySymbol, convertPrice }          = useContext(CurrencyContext);
 
   /** ---------------- Form state ---------------- */
   const [loading, setLoading] = useState(false);
@@ -49,14 +49,15 @@ const Checkout = () => {
 
   /** -------------- Totals (memoised) ----------- */
   const { shipping, tax, grandTotal } = useMemo(() => {
+    const convertedTotal = convertPrice ? parseFloat(convertPrice(total)) : total;
     const shipping = cart.length ? 10 : 0;          // flat-rate demo shipping
-    const tax      = total * 0.08;                  // 8 % VAT
+    const tax      = convertedTotal * 0.08;         // 8 % VAT
     return {
       shipping,
       tax,
-      grandTotal: total + shipping + tax,
+      grandTotal: convertedTotal + shipping + tax,
     };
-  }, [cart.length, total]);
+  }, [cart.length, total, convertPrice]);
 
   /** -------------- Render ---------------------- */
   return (
@@ -127,9 +128,12 @@ const Checkout = () => {
                           Qty: {item.amount}
                         </p>
                       </div>
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className="text-sm text-gray-500">
                         {currencySymbol}
-                        {(item.price * item.amount).toFixed(2)}
+                        {convertPrice ? 
+                          (convertPrice(item.price) * item.amount).toFixed(2) : 
+                          (item.price * item.amount).toFixed(2)
+                        }
                       </p>
                     </div>
                   ))}
@@ -140,7 +144,7 @@ const Checkout = () => {
                     <dt className="text-gray-600">Subtotal</dt>
                     <dd className="font-medium">
                       {currencySymbol}
-                      {total.toFixed(2)}
+                      {convertPrice ? convertPrice(total) : total.toFixed(2)}
                     </dd>
                   </div>
                   <div className="flex justify-between">

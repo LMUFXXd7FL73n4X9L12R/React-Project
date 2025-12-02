@@ -1,14 +1,20 @@
 import React, { useContext } from "react";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { ProductContext } from "../contexts/ProductContext.jsx";
+import { CartContext } from "../contexts/CartContext.jsx";
+import { CurrencyContext } from "../contexts/CurrencyContext.jsx";
 
 const ProductDetails = () => {
 	// get the product id from url
 	const { id } = useParams();
 	const { products } = useContext(ProductContext);
+	const { addToCart } = useContext(CartContext);
+	const { currencySymbol, convertPrice } = useContext(CurrencyContext);
 
 	//get the single product based on id
-	const product = products[id];
+	const product = products.find((item) => {
+		return item.id === parseInt(id);
+	});
 
 	// if product is not found
 	if (!product) {
@@ -39,10 +45,13 @@ const ProductDetails = () => {
 							{title}
 						</h1>
 						<div className="text-2xl text-red-500 font-medium mb-6">
-							$ {price}
+							{currencySymbol} {convertPrice(price)}
 						</div>
 						<p className="mb-8">{description}</p>
-						<button className="bg-black py-4 px-8 text-white">
+						<button 
+							className="bg-black py-4 px-8 text-white"
+							onClick={() => addToCart(product, product.id)}
+						>
 							Add to cart
 						</button>
 					</div>
