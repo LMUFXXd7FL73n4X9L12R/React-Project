@@ -7,12 +7,13 @@ const CartProvider = ({ children }) => {
 	const [cart, setCart] = useState([]);
 	// item amount state
 	const [itemAmount, setItemAmount] = useState(0);
-	// total price state
+	// total price state (will be calculated with conversion in components)
 	const [total, setTotal] = useState(0);
 
 	useEffect(() => {
+		// Calculate total using base USD prices
 		const total = cart.reduce((accumulator, currentItem) => {
-			return accumulator + currentItem.price;
+			return accumulator + currentItem.price * currentItem.amount;
 		}, 0);
 		setTotal(total);
 	}, [cart]);
@@ -29,7 +30,7 @@ const CartProvider = ({ children }) => {
 
 	// add to cart
 	const addToCart = (product, id) => {
-		const newItem = { ...product, amount: 2 };
+		const newItem = { ...product, amount: 1 };
 		// check if the item is already in the cart
 		const cartItem = cart.find((item) => {
 			return item.id === id;
@@ -37,7 +38,7 @@ const CartProvider = ({ children }) => {
 		if (cartItem) {
 			const newCart = [...cart].map((item) => {
 				if (item.id === id) {
-					return { ...item, amount: cartItem.amount };
+					return { ...item, amount: cartItem.amount + 1 };
 				} else return item;
 			});
 			setCart(newCart);
@@ -68,6 +69,15 @@ const CartProvider = ({ children }) => {
 	// decrease amount
 	const decreaseAmount = (id) => {
 		const cartItem = cart.find((item) => item.id === id);
+		if (cartItem) {
+			const newCart = cart.map((item) => {
+				if (item.id === id) {
+					return { ...item, amount: cartItem.amount - 1 };
+				}
+				return item;
+			});
+			setCart(newCart);
+		}
 	};
 
 	return (

@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 
@@ -6,6 +6,8 @@ import Home from "./pages/Home";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Profile from "./components/Profile";
+import ProductDetails from "./pages/ProductDetails";
+import Checkout from "./pages/Checkout";
 
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
@@ -21,6 +23,8 @@ function App() {
 					<Route path="/" element={<Home />} />
 					<Route path="/signup" element={<Signup />} />
 					<Route path="/login" element={<Login />} />
+					<Route path="/product/:id" element={<ProductDetails />} />
+					<Route path="/checkout" element={<Checkout />} />
 
 					{/* Protected routes */}
 					<Route
